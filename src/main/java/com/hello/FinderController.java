@@ -1,13 +1,15 @@
 package com.hello;
 
-import com.hello.Finder;
+import com.postRequest.Response;
+import com.postRequest.Statistic;
+import com.postRequest.ValuesList;
 import com.services.finder_service.FinderService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 @RestController
@@ -21,7 +23,7 @@ public class FinderController {
         this.finderService = finderService;
     }
 
-    @RequestMapping("/finder")
+    @GetMapping("/finder")
     public ResponseEntity finder(@RequestParam String row,
                                  @RequestParam char symbol) {
 
@@ -41,5 +43,12 @@ public class FinderController {
             logger.info("There is an server error");
             return ResponseEntity.status(500).body("Server error");
         }
+    }
+
+    @PostMapping("/PostmanFinder")
+    public Response finder(@RequestBody ValuesList values) {
+        List<Finder> list = finderService.processList(values);
+        Statistic stats = finderService.collectStatistic(values);
+        return new Response(list, stats);
     }
 }

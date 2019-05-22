@@ -11,6 +11,6 @@ public class Finder {
     }
 
     public String getContent() {
-        return "There is " + content + " \"" + symbol + "\" in row";
+        return "There is " + content + " " + symbol + " in row";
     }
 }
